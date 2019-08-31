@@ -1,0 +1,51 @@
+{
+  "name": "tabstats",
+  "version": "1.0.0",
+  "description": "An extension that track amount of time you spent on a website each day.",
+  "main": "./src/index.js",
+  "scripts": {
+    "build-prod": "webpack --mode production --config webpack.prod.config.js",
+    "generate-doc": "jsdoc -R README.md -r src -d apidoc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pallab-gain/TabStats.git"
+  },
+  "keywords": [
+    "tab",
+    "chrome",
+    "extension",
+    "time",
+    "management",
+    "track"
+  ],
+  "author": "pallab.gain@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pallab-gain/TabStats/issues"
+  },
+  "homepage": "https://github.com/pallab-gain/TabStats#README.md",
+  "devDependencies": {
+    "@babel/core": "^7.5.0",
+    "babel-loader": "^8.0.6",
+    "babel-polyfill": "^6.26.0",
+    "chai": "^4.2.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "coveralls": "^3.0.4",
+    "eslint": "^6.0.1",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-loader": "^2.2.1",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "jsdoc": "^3.6.2",
+    "mocha": "^6.1.4",
+    "webpack": "^4.35.2",
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "^3.7.2",
+    "webpack-merge": "^4.2.1"
+  },
+  "dependencies": {}
+}

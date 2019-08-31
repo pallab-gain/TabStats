@@ -1,0 +1,13 @@
+{
+  "extends": "standard",
+  "rules": {
+    "semi": [
+      1,
+      "always"
+    ]
+  },
+  "globals": {
+    "__VERSION__": false,
+    "__PRODUCTION__": false
+  }
+}
