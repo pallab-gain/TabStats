@@ -4716,7 +4716,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 const getKey = async (tabInfo = undefined) => {
   const url = new URL(tabInfo.url);
-  return url.origin;
+  return url.hostname;
 };
 
 const safeExecute = async fn => {
