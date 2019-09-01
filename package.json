@@ -4,7 +4,7 @@
   "description": "An extension that track amount of time you spent on a website each day.",
   "main": "./src/extension/index.js",
   "scripts": {
-    "build-prod": "webpack --mode production --config webpack.prod.config.js",
+    "build-prod": "webpack --mode production --config webpack.extension/webpack.prod.config.js",
     "generate-doc": "jsdoc -R README.md -r src -d apidoc"
   },
   "repository": {

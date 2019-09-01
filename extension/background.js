@@ -1,1 +1,1 @@
-/Users/pallab/Documents/Development/Personal/TabStats/dist/background.js
+/Users/pallab/Documents/Development/Personal/TabStats/webpack.extension/dist/background.js
