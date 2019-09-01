@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
-const { version, main } = require('../package');
+const { version, extensionMain: main } = require('../package');
 
 function resolve (dir) {
   return path.join(__dirname, dir);

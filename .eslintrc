@@ -1,5 +1,8 @@
 {
-  "extends": "standard",
+  "extends": [
+    "standard",
+    "plugin:react/recommended"
+  ],
   "rules": {
     "semi": [
       1,
@@ -9,6 +12,7 @@
   "globals": {
     "__VERSION__": false,
     "__PRODUCTION__": false,
-    "localStorage": false
+    "localStorage": false,
+    "React": false
   }
 }
