@@ -6,7 +6,6 @@ import PIEChart from './pie.chart/pie.chart';
 import Loading from './loading/loading';
 import Error from './error/error';
 
-// eslint-disable-next-line no-unused-vars
 const db = require('../../extension/database');
 
 class Main extends React.Component {
