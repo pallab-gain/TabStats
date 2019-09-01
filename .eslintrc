@@ -8,6 +8,7 @@
   },
   "globals": {
     "__VERSION__": false,
-    "__PRODUCTION__": false
+    "__PRODUCTION__": false,
+    "localStorage": false
   }
 }
