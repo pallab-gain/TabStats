@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 
-// eslint-disable-next-line no-unused-vars
 import { toHumanReadableDuration } from '../../utils/utils';
 const HighChartEntry = require('../../../extension/highchart.entry');
 

@@ -17,7 +17,6 @@ class Main extends React.Component {
     };
   }
   componentDidMount () {
-    console.log('component did mount');
     db.getRecords().then(_recordsList => {
       this.setState({
         error: false,
