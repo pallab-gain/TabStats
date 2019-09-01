@@ -3,6 +3,7 @@ const moment = require('moment');
 const localForge = require('localforage');
 const lo = require('lodash');
 const { safeExecute } = require('./utils');
+const Entry = require('./entry');
 
 const STATS_DATABASE_NAME = 'xerxes.tab.stats.v2';
 const ADMIN_DATABASE_NAME = 'xerxes.tab.admin.v2';
@@ -66,7 +67,7 @@ class Database {
     const todayInDays = moment.unix(epoch).dayOfYear();
 
     for (const curKey of keys) {
-      const entries = await this._statsDB.getItem(curKey);
+      const entries = await this._statsDB.getItem(curKey) || [];
       const latestEntry = lo.last(entries);
       if (latestEntry) {
         await safeExecute(async () => {
@@ -96,6 +97,30 @@ class Database {
   async getLastUpdate () {
     const retval = await this._adminDB.getItem('lastUpdate') || 0;
     return retval;
+  }
+
+  /**
+   * @public
+   * Get today's record
+   * @return {Promise<void>}
+   */
+  async getRecords () {
+    const keys = await this._statsDB.keys() || [];
+    const epoch = moment().unix();
+    const todayInDays = moment.unix(epoch).dayOfYear();
+    let recordList = [];
+    for (const curKey of keys) {
+      const entries = await this._statsDB.getItem(curKey) || [];
+      // total number of today's entry in second
+      const entriesCount = entries.filter(item => {
+        const lastUpdateInDays = moment.unix(item.epoch || epoch).dayOfYear();
+        return todayInDays === lastUpdateInDays;
+      }).length;
+      if (entriesCount > 0) {
+        recordList.push(Entry(curKey, entriesCount));
+      }
+    }
+    return recordList;
   }
 }
 
