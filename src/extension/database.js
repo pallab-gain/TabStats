@@ -43,7 +43,7 @@ class Database {
   }
 
   /**
-   * @private
+   * @public
    * Get list of sites by key
    * @param key
    * @return {Promise<void|Array>}
@@ -102,7 +102,7 @@ class Database {
   /**
    * @public
    * Get today's record
-   * @return {Promise<void>}
+   * @return {Promise<void|Number>}
    */
   async getRecords () {
     const keys = await this._statsDB.keys() || [];
@@ -121,6 +121,27 @@ class Database {
       }
     }
     return recordList;
+  }
+
+  /**
+   * @public
+   * Get list of sites by key for today only
+   * @param key
+   * @return {Promise<void|Number>}
+   */
+  async getRecordsByKey (key = null) {
+    if (!key) {
+      return [];
+    }
+    const epoch = moment().unix();
+    const todayInDays = moment.unix(epoch).dayOfYear();
+    const entries = await this._statsDB.getItem(key) || [];
+    // total number of today's entry in second
+    const entriesCount = entries.filter(item => {
+      const lastUpdateInDays = moment.unix(item.epoch || epoch).dayOfYear();
+      return todayInDays === lastUpdateInDays;
+    }).length;
+    return entriesCount;
   }
 }
 

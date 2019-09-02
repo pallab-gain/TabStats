@@ -28,6 +28,15 @@ const toHumanReadableDuration = (durationInSecond = 0) => {
   return sb;
 };
 
+const toShortDuration = (durationInSecond = 0) => {
+  const { hh, mm } = toHMS(durationInSecond);
+  if (hh > 0) {
+    return `${hh}:${mm}h`;
+  }
+  return `${toStr(mm)} m`;
+};
+
 module.exports = {
-  toHumanReadableDuration
+  toHumanReadableDuration,
+  toShortDuration
 };

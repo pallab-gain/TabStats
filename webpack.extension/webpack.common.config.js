@@ -22,7 +22,11 @@ module.exports = {
       {
         test: /(\.jsx|\.js)$/,
         loader: 'babel-loader',
-        exclude: /(node_modules|bower_components)/
+        exclude: /(node_modules|bower_components)/,
+        options: {
+          // don't lookup for root .babelrc
+          babelrc: false
+        }
       },
       {
         test: /(\.jsx|\.js)$/,

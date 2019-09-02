@@ -1,13 +1,17 @@
 'use strict';
+
 const INTERVAL_DURATION_IN_MS = 1000; // every second
 const SYNC_INTERVAL = 1;
 const {
   getKey,
   safeExecute
 } = require('./utils');
+// eslint-disable-next-line no-unused-vars
+const { toShortDuration } = require('../client/utils/utils');
 const TabInfo = require('./tab.info');
 const moment = require('moment');
 const db = require('./database');
+const lo = require('lodash');
 
 const maybeSyncRecords = async () => {
   const epoch = moment().unix();
@@ -40,11 +44,24 @@ const handleTabState = async (tabList = []) => {
     }
   }
 };
+const setBadge = async (tabList = []) => {
+  const currentTab = lo.first(tabList);
+  if (!currentTab) {
+    return undefined;
+  }
+  const tabInfo = TabInfo(currentTab.title, currentTab.url, moment().unix());
+  const key = await getKey(tabInfo);
+  const totalDurationInSecond = await db.getRecordsByKey(key);
+  const duration = toShortDuration(totalDurationInSecond);
+  // eslint-disable-next-line no-undef
+  chrome.browserAction.setBadgeText({ text: duration }, () => {});
+};
 
 const runnable = () => {
   // eslint-disable-next-line no-undef
   chrome.tabs.query({ active: true, lastFocusedWindow: true }, async (tabList = []) => {
     await handleTabState(tabList);
+    await setBadge(tabList);
   });
 };
 
