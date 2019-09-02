@@ -4,3 +4,16 @@
 
 #### Chrome extension URL
 [https://chrome.google.com/webstore/detail/tabstats/milpdpjbadncalidnmimelocmkmnmacj](https://chrome.google.com/webstore/detail/tabstats/milpdpjbadncalidnmimelocmkmnmacj)
+
+
+#### How to build
+
+- Install dependencies 
+```
+npm install
+```
+
+- Pack extension
+```
+npm run build-and-compress-extension
+``` 
