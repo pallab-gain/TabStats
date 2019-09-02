@@ -39,7 +39,7 @@ class Main extends React.Component {
 
   render () {
     return (
-      <div className={`container ${styles.container_div}`}>
+      <div className={`container-fluid ${styles.container_div}`}>
         { this.state.inProgress && <Loading/> }
         { !this.state.inProgress && this.state.error && <Error/> }
         { !this.state.inProgress && !this.state.error && this.state.recordList.length > 0 && <PopupUI recordList={this.state.recordList}/> }

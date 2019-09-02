@@ -1,0 +1,13 @@
+.text {
+    color: #fff;
+    font-size: 15px;
+    background-color: transparent;
+}
+
+.selected {
+    font-weight: bold;
+}
+
+.cursor {
+    cursor: pointer;
+}
