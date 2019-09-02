@@ -33994,7 +33994,9 @@ module.exports = __webpack_require__(133);
 
 const INTERVAL_DURATION_IN_MS = 1000; // every second
 
-const SYNC_INTERVAL = 1;
+const SYNC_INTERVAL = 1; // in days
+
+const BADGE_UPDATE_INTERVAL = 5; // in second
 
 const {
   getKey,
@@ -34013,6 +34015,8 @@ const moment = __webpack_require__(0);
 const db = __webpack_require__(137);
 
 const lo = __webpack_require__(131);
+
+let lastBadgeUpdateInSecond = 0;
 
 const maybeSyncRecords = async () => {
   const epoch = moment().unix();
@@ -34049,6 +34053,13 @@ const handleTabState = async (tabList = []) => {
 };
 
 const setBadge = async (tabList = []) => {
+  const epoch = moment().unix();
+
+  if (epoch - lastBadgeUpdateInSecond <= BADGE_UPDATE_INTERVAL) {
+    return;
+  }
+
+  lastBadgeUpdateInSecond = epoch;
   const currentTab = lo.first(tabList);
 
   if (!currentTab) {
