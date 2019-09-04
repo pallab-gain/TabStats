@@ -8,7 +8,7 @@ import TopVisit from '../top.visit/top.visit';
 import DailySummary from '../daily.summary/daily.summary';
 
 const lo = require('lodash');
-const topVisitCount = 6;
+const topVisitCount = 7;
 const options = ['Default', `Top ${topVisitCount}`, 'Daily summary'];
 
 const getIsSelected = (prvOption, curOption) => {

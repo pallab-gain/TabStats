@@ -86,14 +86,9 @@ class DailySummary extends React.Component {
           }
         },
         legend: {
-          align: 'right',
-          verticalAlign: 'bottom',
-          floating: false,
-          backgroundColor:
-            Highcharts.defaultOptions.legend.backgroundColor || 'white',
-          borderColor: '#CCC',
-          borderWidth: 1,
-          shadow: false
+          layout: 'horizontal',
+          maxHeight: 80,
+          alignColumns: false
         },
         tooltip: {
           formatter: function () {

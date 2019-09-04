@@ -37,7 +37,7 @@ const toShortDuration = (durationInSecond = 0) => {
 };
 
 const toMinutes = (durationInSecond = 0) => {
-  const minutes = Math.ceil((1.0 * durationInSecond) / 60);
+  const minutes = Math.round((1.0 * durationInSecond) / 60);
   return minutes;
 };
 

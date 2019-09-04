@@ -18,7 +18,7 @@ const getTopRecords = (recordList = [], totalCount) => {
 };
 
 const getDiv = (indx = 0) => {
-  return indx < 3 ? 'col-sm-4' : 'col-sm-4 mb-2';
+  return indx < 3 ? 'col-sm pl-1 pr-1 mr-0' : 'col-sm pl-1 pr-1 mr-0 mb-2';
 };
 
 const TopVisit = ({ recordList, totalCount }) => (
