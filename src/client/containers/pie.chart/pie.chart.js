@@ -20,9 +20,9 @@ const getHighChartData = (recordList = []) => {
     (accumulator, record) => accumulator + record.totalTimeInSec, 0);
 
   const chartData = recordList.map(item => {
-    const { title, totalTimeInSec } = item;
+    const { scope, totalTimeInSec } = item;
     const percentage = (100.0 * totalTimeInSec) / totalDurationInSecond;
-    return HighChartEntry(title, totalTimeInSec, percentage);
+    return HighChartEntry(scope, totalTimeInSec, percentage);
   });
   return chartData;
 };

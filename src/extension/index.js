@@ -57,8 +57,8 @@ const setBadge = async (tabList = []) => {
   if (!currentTab) {
     return undefined;
   }
-  const key = await getKey(currentTab.url);
-  const totalDurationInSecond = await db.getRecordsByKey(key);
+  const key = await getKey(currentTab);
+  const totalDurationInSecond = await db.getRecordsCountByKey(key);
   const duration = toShortDuration(totalDurationInSecond);
   // eslint-disable-next-line no-undef
   chrome.browserAction.setBadgeText({ text: duration }, () => {});

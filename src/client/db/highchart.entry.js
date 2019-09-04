@@ -1,8 +1,8 @@
 'use strict';
 
-const HighChartEntry = (title, totalTimeInSec, percentage) => {
+const HighChartEntry = (scope, totalTimeInSec, percentage) => {
   return {
-    name: title,
+    name: scope,
     totalTimeInSec,
     y: percentage
   };

@@ -11,7 +11,7 @@ const OptionText = ({ text, isSelected, onSelectionChange }) => (
 
 OptionText.propTypes = {
   text: PropTypes.string,
-  isSelected: PropTypes.boolean,
+  isSelected: PropTypes.bool,
   onSelectionChange: PropTypes.func.isRequired
 };
 
