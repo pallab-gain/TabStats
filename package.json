@@ -1,17 +1,17 @@
 {
   "name": "tabstats",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "An extension that track amount of time you spent on a website each day.",
   "extensionMain": "./src/extension/index.js",
   "clientMain": "./src/client/index.js",
   "scripts": {
     "build-extension": "webpack --mode production --config webpack.extension/webpack.prod.config.js",
     "build-client-prod": "webpack --mode production --config webpack.client/webpack.prod.config.js",
-    "build-client-dev": "npm run clean || npm run sym-copy-essentials && webpack-dev-server --mode development --config webpack.client/webpack.dev.config.js --devtool inline-source-map --hot",
+    "run-client-dev": "npm run sym-copy-essentials && webpack-dev-server --mode development --config webpack.client/webpack.dev.config.js --devtool inline-source-map --hot",
     "copy-essentials": "cp -r node_modules/jquery extension/cdn/jquery && cp -r node_modules/bootstrap extension/cdn/bootstrap && cp webpack.client/dist/bundle.js extension/cdn/bundle.js && cp webpack.extension/dist/background.js extension/background.js",
-    "sym-copy-essentials": "ln -s `pwd`/node_modules/jquery `pwd`/extension/cdn/jquery && ln -s `pwd`/node_modules/bootstrap `pwd`/extension/cdn/bootstrap && ln -s `pwd`/webpack.client/dist/bundle.js `pwd`/extension/cdn/bundle.js && ln -s `pwd`/webpack.extension/dist/background.js `pwd`/extension/background.js",
-    "build-and-compress-extension": "npm run clean || npm run build-client-prod && npm run build-extension && npm run copy-essentials && zip -r extension.zip extension",
-    "clean": "rm -r extension/cdn/jquery extension/cdn/bootstrap extension/cdn/bundle.js extension/background.js"
+    "sym-copy-essentials": "ln -s $(pwd)/node_modules/jquery $(pwd)/extension/cdn/jquery && ln -s $(pwd)/node_modules/bootstrap $(pwd)/extension/cdn/bootstrap && ln -s $(pwd)/webpack.client/dist/bundle.js $(pwd)/extension/cdn/bundle.js && ln -s $(pwd)/webpack.extension/dist/background.js $(pwd)/extension/background.js",
+    "build-and-compress-extension": "npm run clean && npm run build-client-prod && npm run build-extension && npm run copy-essentials && zip -r extension.zip extension",
+    "clean": "rm -r extension/cdn/jquery || true ; rm -r extension/cdn/bootstrap || true ; rm extension/cdn/bundle.js || true ; rm extension/background.js || true"
   },
   "repository": {
     "type": "git",

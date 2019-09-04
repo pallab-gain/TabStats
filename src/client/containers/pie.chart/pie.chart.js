@@ -5,7 +5,7 @@ import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 
 import { toHumanReadableDuration } from '../../utils/utils';
-const HighChartEntry = require('../../../extension/highchart.entry');
+const HighChartEntry = require('../../db/highchart.pie.entry');
 
 const getTitle = (recordList = []) => {
   const totalDurationInSecond = recordList.reduce(
@@ -20,9 +20,9 @@ const getHighChartData = (recordList = []) => {
     (accumulator, record) => accumulator + record.totalTimeInSec, 0);
 
   const chartData = recordList.map(item => {
-    const { title, totalTimeInSec } = item;
+    const { scope, totalTimeInSec } = item;
     const percentage = (100.0 * totalTimeInSec) / totalDurationInSecond;
-    return HighChartEntry(title, totalTimeInSec, percentage);
+    return HighChartEntry(scope, totalTimeInSec, percentage);
   });
   return chartData;
 };
@@ -49,7 +49,7 @@ class PIEChart extends React.Component {
           formatter: function () {
             const duration = toHumanReadableDuration(this.point.totalTimeInSec);
             const percentage = this.point.y.toFixed(2);
-            return `${this.point.name} <br/> Time Spend : <b> ${duration} </b> <br/>Percentage: <b> ${percentage} % <b> <br/>`;
+            return `${this.point.name} <br/> Time spent : <b> ${duration} </b> <br/>Percentage: <b> ${percentage} % <b> <br/>`;
           }
         },
         legend: {

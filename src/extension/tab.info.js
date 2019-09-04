@@ -1,9 +1,10 @@
 'use strict';
 
-const TabInfo = (title, url, epoch) => {
+const TabInfo = (title, url, favIconUrl, epoch) => {
   return {
     title,
     url,
+    favIconUrl,
     epoch
   };
 };
