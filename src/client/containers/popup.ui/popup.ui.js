@@ -5,6 +5,7 @@ import PIEChart from '../pie.chart/pie.chart';
 import OptionText from './option.text/option';
 import styles from './popup.ui.css';
 import TopVisit from '../top.visit/top.visit';
+import DailySummary from '../daily.summary/daily.summary';
 
 const lo = require('lodash');
 const topVisitCount = 6;
@@ -48,12 +49,12 @@ class PopupUI extends React.Component {
 
         <div className={`col-sm-12`}>
           { this.state.selected === lo.get(options, 0) &&
-            <PIEChart
-              recordList={this.props.recordList}/>}
+            <PIEChart recordList={this.props.recordList}/>}
           { this.state.selected === lo.get(options, 1) &&
-            <TopVisit
-              recordList={this.props.recordList}
+            <TopVisit recordList={this.props.recordList}
               totalCount={topVisitCount}/>}
+          { this.state.selected === lo.get(options, 2) &&
+            <DailySummary recordList={this.props.recordList}/>}
         </div>
 
       </div>

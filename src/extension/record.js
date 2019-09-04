@@ -8,17 +8,19 @@
  * @param epoch
  * @param scope
  * @param totalTimeInSec
- * @return {{totalTimeInSec: *, scope: *, favIconUrl: *, epoch: *, title: *, url: *}}
+ * @param sitesList
+ * @return {{totalTimeInSec: *, sitesList: *, scope: *, favIconUrl: *, epoch: *, title: *, url: *}}
  * @constructor
  */
-const Record = ({ title, url, favIconUrl, epoch }, scope, totalTimeInSec) => {
+const Record = ({ title, url, favIconUrl, epoch }, scope, totalTimeInSec, sitesList = []) => {
   return {
     title,
     url,
     favIconUrl,
     epoch,
     scope,
-    totalTimeInSec
+    totalTimeInSec,
+    sitesList
   };
 };
 

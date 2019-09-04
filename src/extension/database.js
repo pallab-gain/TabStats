@@ -112,13 +112,13 @@ class Database {
     for (const curKey of keys) {
       const entries = await this._statsDB.getItem(curKey) || [];
       // total number of today's entry in second
-      const entriesCount = entries.filter(item => {
+      const visitList = entries.filter(item => {
         const lastUpdateInDays = moment.unix(item.epoch || epoch).dayOfYear();
         return todayInDays === lastUpdateInDays;
-      }).length;
-      if (entriesCount > 0) {
+      });
+      if (visitList.length > 0) {
         const lastItem = lo.last(entries) || {};
-        recordList.push(Record(lastItem, curKey, entriesCount));
+        recordList.push(Record(lastItem, curKey, visitList.length, visitList));
       }
     }
     return recordList;

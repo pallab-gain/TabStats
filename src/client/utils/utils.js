@@ -4,7 +4,7 @@ const toStr = (num) => {
 
 /* convert millisecond to hh:mm:ss */
 const toHMS = (durationInSecond = 0) => {
-  let minutes = Math.floor(durationInSecond / 60);
+  let minutes = Math.floor((1.0 * durationInSecond) / 60);
   durationInSecond = durationInSecond % 60;
   const hours = Math.floor(minutes / 60);
   minutes = minutes % 60;
@@ -36,7 +36,13 @@ const toShortDuration = (durationInSecond = 0) => {
   return `${toStr(mm)}m`;
 };
 
+const toMinutes = (durationInSecond = 0) => {
+  const minutes = Math.ceil((1.0 * durationInSecond) / 60);
+  return minutes;
+};
+
 module.exports = {
   toHumanReadableDuration,
-  toShortDuration
+  toShortDuration,
+  toMinutes
 };
