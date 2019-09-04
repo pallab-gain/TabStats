@@ -3,7 +3,7 @@ const moment = require('moment');
 const localForge = require('localforage');
 const lo = require('lodash');
 const { safeExecute } = require('./utils');
-const Entry = require('./entry');
+const Record = require('./record');
 
 const STATS_DATABASE_NAME = 'xerxes.tab.stats.v2';
 const ADMIN_DATABASE_NAME = 'xerxes.tab.admin.v2';
@@ -102,7 +102,7 @@ class Database {
   /**
    * @public
    * Get today's record
-   * @return {Promise<void|Number>}
+   * @return {Promise<void|Number|Object>}
    */
   async getRecords () {
     const keys = await this._statsDB.keys() || [];
@@ -117,7 +117,8 @@ class Database {
         return todayInDays === lastUpdateInDays;
       }).length;
       if (entriesCount > 0) {
-        recordList.push(Entry(curKey, entriesCount));
+        const lastItem = lo.last(entries) || {};
+        recordList.push(Record(lastItem, curKey, entriesCount));
       }
     }
     return recordList;
@@ -129,9 +130,9 @@ class Database {
    * @param key
    * @return {Promise<void|Number>}
    */
-  async getRecordsByKey (key = null) {
+  async getRecordsCountByKey (key = null) {
     if (!key) {
-      return [];
+      return 0;
     }
     const epoch = moment().unix();
     const todayInDays = moment.unix(epoch).dayOfYear();

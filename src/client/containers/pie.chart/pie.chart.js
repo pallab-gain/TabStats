@@ -5,7 +5,7 @@ import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 
 import { toHumanReadableDuration } from '../../utils/utils';
-const HighChartEntry = require('../../../extension/highchart.entry');
+const HighChartEntry = require('../../db/highchart.entry');
 
 const getTitle = (recordList = []) => {
   const totalDurationInSecond = recordList.reduce(

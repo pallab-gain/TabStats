@@ -33,7 +33,7 @@ const toShortDuration = (durationInSecond = 0) => {
   if (hh > 0) {
     return `${hh}:${mm}h`;
   }
-  return `${toStr(mm)} m`;
+  return `${toStr(mm)}m`;
 };
 
 module.exports = {

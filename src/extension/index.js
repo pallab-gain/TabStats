@@ -2,7 +2,7 @@
 
 const INTERVAL_DURATION_IN_MS = 1000; // every second
 const SYNC_INTERVAL = 1; // in days
-const BADGE_UPDATE_INTERVAL = 5; // in second
+const BADGE_UPDATE_INTERVAL = 3; // in second
 const {
   getKey,
   safeExecute
@@ -13,6 +13,7 @@ const TabInfo = require('./tab.info');
 const moment = require('moment');
 const db = require('./database');
 const lo = require('lodash');
+
 let lastBadgeUpdateInSecond = 0;
 
 const maybeSyncRecords = async () => {
@@ -38,7 +39,7 @@ const handleTabState = async (tabList = []) => {
   // fetch the list of tab details from database
   for (const currentTab of tabList) {
     if (currentTab.active === true) {
-      const tabInfo = TabInfo(currentTab.title, currentTab.url, moment().unix());
+      const tabInfo = TabInfo(currentTab.title, currentTab.url, currentTab.favIconUrl, moment().unix());
       const key = await getKey(tabInfo);
       await safeExecute(async () => {
         await db.updateTabStatus(tabInfo, key);
@@ -56,8 +57,7 @@ const setBadge = async (tabList = []) => {
   if (!currentTab) {
     return undefined;
   }
-  const tabInfo = TabInfo(currentTab.title, currentTab.url, moment().unix());
-  const key = await getKey(tabInfo);
+  const key = await getKey(currentTab.url);
   const totalDurationInSecond = await db.getRecordsByKey(key);
   const duration = toShortDuration(totalDurationInSecond);
   // eslint-disable-next-line no-undef

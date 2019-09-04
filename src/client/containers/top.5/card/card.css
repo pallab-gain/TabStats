@@ -1,0 +1,18 @@
+.card_main {
+
+}
+
+.card_img {
+    width: 100%;
+    height: auto;
+}
+
+.site_details {
+    font-size: 12px
+}
+
+.spend_details {
+    color: #274b6d;
+    font-weight: bold;
+    font-size: 12px
+}
