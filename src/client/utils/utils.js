@@ -29,11 +29,12 @@ const toHumanReadableDuration = (durationInSecond = 0) => {
 };
 
 const toShortDuration = (durationInSecond = 0) => {
-  const { hh, mm } = toHMS(durationInSecond);
+  const { hh, mm, ss } = toHMS(durationInSecond);
   if (hh > 0) {
-    return `${hh}:${mm}h`;
+    return `${toStr(hh)}:${toStr(mm)}`;
+  } else {
+    return `${toStr(mm)}:${toStr(ss)}`;
   }
-  return `${toStr(mm)}m`;
 };
 
 const toMinutes = (durationInSecond = 0) => {
