@@ -6,14 +6,19 @@ const { safeExecute } = require('./utils');
 const Record = require('./record');
 
 const STATS_DATABASE_NAME = 'xerxes.tab.stats.v2';
+const STATS_DATABASE_TIME_SPENT = 'xerxes.tab.stats.time.spent.v2';
 const ADMIN_DATABASE_NAME = 'xerxes.tab.admin.v2';
-const MAX_STORE_DURATION = 3; // in days
+const MAX_STORE_DURATION = 1; // in days
 
 class Database {
   constructor () {
     this._name = 'database';
     this._statsDB = localForge.createInstance({
       name: STATS_DATABASE_NAME
+    });
+    // will store total cumulative time in seconds just for quick access
+    this._statsDBTimeSpent = localForge.createInstance({
+      name: STATS_DATABASE_TIME_SPENT
     });
     this._adminDB = localForge.createInstance({
       name: ADMIN_DATABASE_NAME
@@ -36,10 +41,11 @@ class Database {
     let visitListToday = visitList.filter(item => {
       const timeInDays = moment.unix(item.epoch);
       // items that are only MAX_STORE_DURATION old
-      return todayInDays - timeInDays <= MAX_STORE_DURATION;
+      return todayInDays - timeInDays < MAX_STORE_DURATION;
     });
     visitListToday.push(tabInfo);
     await this._statsDB.setItem(key, visitListToday);
+    await this._statsDBTimeSpent.setItem(key, visitListToday.length);
   }
 
   /**
@@ -75,6 +81,7 @@ class Database {
           // delete items that are more than max MAX_STORE_DURATION old
           if (todayInDays - lastUpdateInDays > MAX_STORE_DURATION) {
             await this._statsDB.removeItem(curKey);
+            await this._statsDBTimeSpent.removeItem(curKey);
           }
         });
       }
@@ -134,15 +141,9 @@ class Database {
     if (!key) {
       return 0;
     }
-    const epoch = moment().unix();
-    const todayInDays = moment.unix(epoch).dayOfYear();
-    const entries = await this._statsDB.getItem(key) || [];
+    const timeSpentInSecond = await this._statsDBTimeSpent.getItem(key) || 0;
     // total number of today's entry in second
-    const entriesCount = entries.filter(item => {
-      const lastUpdateInDays = moment.unix(item.epoch || epoch).dayOfYear();
-      return todayInDays === lastUpdateInDays;
-    }).length;
-    return entriesCount;
+    return timeSpentInSecond;
   }
 }
 

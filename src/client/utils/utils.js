@@ -3,7 +3,7 @@ const toStr = (num) => {
 };
 
 /* convert millisecond to hh:mm:ss */
-const toHMS = (durationInSecond = 0) => {
+export const toHMS = (durationInSecond = 0) => {
   let minutes = Math.floor((1.0 * durationInSecond) / 60);
   durationInSecond = durationInSecond % 60;
   const hours = Math.floor(minutes / 60);
@@ -15,7 +15,7 @@ const toHMS = (durationInSecond = 0) => {
   };
 };
 
-const toHumanReadableDuration = (durationInSecond = 0) => {
+export const toHumanReadableDuration = (durationInSecond = 0) => {
   const { hh, mm, ss } = toHMS(durationInSecond);
   let sb = '';
   if (hh > 0) {
@@ -28,21 +28,16 @@ const toHumanReadableDuration = (durationInSecond = 0) => {
   return sb;
 };
 
-const toShortDuration = (durationInSecond = 0) => {
-  const { hh, mm } = toHMS(durationInSecond);
+export const toShortDuration = (durationInSecond = 0) => {
+  const { hh, mm, ss } = toHMS(durationInSecond);
   if (hh > 0) {
-    return `${hh}:${mm}h`;
+    return `${toStr(hh)}:${toStr(mm)}`;
+  } else {
+    return `${toStr(mm)}:${toStr(ss)}`;
   }
-  return `${toStr(mm)}m`;
 };
 
-const toMinutes = (durationInSecond = 0) => {
+export const toMinutes = (durationInSecond = 0) => {
   const minutes = Math.round((1.0 * durationInSecond) / 60);
   return minutes;
-};
-
-module.exports = {
-  toHumanReadableDuration,
-  toShortDuration,
-  toMinutes
 };

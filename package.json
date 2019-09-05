@@ -1,6 +1,6 @@
 {
   "name": "tabstats",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "An extension that track amount of time you spent on a website each day.",
   "extensionMain": "./src/extension/index.js",
   "clientMain": "./src/client/index.js",
@@ -11,7 +11,7 @@
     "copy-essentials": "cp -r node_modules/jquery extension/cdn/jquery && cp -r node_modules/bootstrap extension/cdn/bootstrap && cp webpack.client/dist/bundle.js extension/cdn/bundle.js && cp webpack.extension/dist/background.js extension/background.js",
     "sym-copy-essentials": "ln -s $(pwd)/node_modules/jquery $(pwd)/extension/cdn/jquery && ln -s $(pwd)/node_modules/bootstrap $(pwd)/extension/cdn/bootstrap && ln -s $(pwd)/webpack.client/dist/bundle.js $(pwd)/extension/cdn/bundle.js && ln -s $(pwd)/webpack.extension/dist/background.js $(pwd)/extension/background.js",
     "build-and-compress-extension": "npm run clean && npm run build-client-prod && npm run build-extension && npm run copy-essentials && zip -r extension.zip extension",
-    "clean": "rm -r extension/cdn/jquery || true ; rm -r extension/cdn/bootstrap || true ; rm extension/cdn/bundle.js || true ; rm extension/background.js || true"
+    "clean": "rm -r webpack.client/dist/bundle.js || true ; rm -r webpack.extension/dist/background.js || true ; rm -r extension/cdn/jquery || true ; rm -r extension/cdn/bootstrap || true ; rm extension/cdn/bundle.js || true ; rm extension/background.js || true"
   },
   "repository": {
     "type": "git",

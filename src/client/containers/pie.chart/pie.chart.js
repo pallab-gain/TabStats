@@ -5,27 +5,6 @@ import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 
 import { toHumanReadableDuration } from '../../utils/utils';
-const HighChartEntry = require('../../db/highchart.pie.entry');
-
-const getTitle = (recordList = []) => {
-  const totalDurationInSecond = recordList.reduce(
-    (accumulator, record) => accumulator + record.totalTimeInSec, 0);
-  const duration = toHumanReadableDuration(totalDurationInSecond);
-
-  return `You spent total ${duration}`;
-};
-
-const getHighChartData = (recordList = []) => {
-  const totalDurationInSecond = recordList.reduce(
-    (accumulator, record) => accumulator + record.totalTimeInSec, 0);
-
-  const chartData = recordList.map(item => {
-    const { scope, totalTimeInSec } = item;
-    const percentage = (100.0 * totalTimeInSec) / totalDurationInSecond;
-    return HighChartEntry(scope, totalTimeInSec, percentage);
-  });
-  return chartData;
-};
 
 class PIEChart extends React.Component {
   constructor (props) {
@@ -39,7 +18,7 @@ class PIEChart extends React.Component {
           type: 'pie'
         },
         title: {
-          text: getTitle(this.props.recordList),
+          text: this.props.pieChartDataTitles,
           style: {
             color: '#274b6d',
             fontSize: '14px'
@@ -70,7 +49,7 @@ class PIEChart extends React.Component {
         series: [{
           name: 'Visit status',
           colorByPoint: true,
-          data: getHighChartData(this.props.recordList)
+          data: this.props.pieChartData
         }]
       }
     };
@@ -88,7 +67,8 @@ class PIEChart extends React.Component {
 }
 
 PIEChart.propTypes = {
-  recordList: PropTypes.array
+  pieChartDataTitles: PropTypes.string,
+  pieChartData: PropTypes.array
 };
 
 export default PIEChart;

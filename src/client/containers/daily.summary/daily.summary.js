@@ -3,53 +3,10 @@ import PropTypes from 'prop-types';
 
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
-import lo from 'lodash';
-import moment from 'moment';
-import { toMinutes } from '../../utils/utils';
-const HighChartEntry = require('../../db/highchart.pie.stack');
-/**
- * Get list of hours for a day in 24 format
- * 0,1,2,3....23
- * @return {[]}
- */
-const getHourList = () => {
-  const categories = [];
-  for (let i = 0; i < 24; i += 1) {
-    categories.push(i);
-  }
-  return categories;
-};
-
-const inBetween = (lo, hi, pivot) => {
-  return pivot >= lo && pivot < hi;
-};
-
-const getVisitByHours = (siteInfo = undefined) => {
-  let visitDurationListInSecond = [];
-  for (let curHour = 0; curHour < 24; curHour += 1) {
-    const visitCount = siteInfo.sitesList.filter(curVisit => {
-      const currentHour = moment.unix(curVisit.epoch).hours();
-      return inBetween(curHour, curHour + 1, currentHour);
-    }).length;
-    visitDurationListInSecond.push(visitCount);
-  }
-  return HighChartEntry(siteInfo.scope, visitDurationListInSecond.map(item => toMinutes(item)));
-};
-
-const getRecordsByHours = (recordList = []) => {
-  let retval = [];
-  const siteList = lo.uniqBy(recordList, record => record.scope);
-  for (const curSite of siteList) {
-    const visitByHours = getVisitByHours(curSite);
-    retval.push(visitByHours);
-  }
-  return retval;
-};
 
 class DailySummary extends React.Component {
   constructor (props) {
     super(props);
-    getRecordsByHours(this.props.recordList);
     this.state = {
       chartOptions: {
         chart: {
@@ -63,7 +20,7 @@ class DailySummary extends React.Component {
           }
         },
         xAxis: {
-          categories: getHourList()
+          categories: this.props.hourListInDays
         },
         yAxis: {
           min: 0,
@@ -104,7 +61,7 @@ class DailySummary extends React.Component {
             }
           }
         },
-        series: getRecordsByHours(this.props.recordList)
+        series: this.props.dailySummaryChartData
       }
     };
   }
@@ -121,7 +78,8 @@ class DailySummary extends React.Component {
 }
 
 DailySummary.propTypes = {
-  recordList: PropTypes.array
+  hourListInDays: PropTypes.array,
+  dailySummaryChartData: PropTypes.array
 };
 
 export default DailySummary;
