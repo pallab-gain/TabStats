@@ -49,12 +49,16 @@ class PopupUI extends React.Component {
 
         <div className={`col-sm-12`}>
           { this.state.selected === lo.get(options, 0) &&
-            <PIEChart recordList={this.props.recordList}/>}
+            <PIEChart
+              pieChartData={lo.get(this.props, 'records.pieChartData', [])}
+              pieChartDataTitles={lo.get(this.props, 'records.pieChartDataTitles', [])}
+            />}
           { this.state.selected === lo.get(options, 1) &&
-            <TopVisit recordList={this.props.recordList}
-              totalCount={topVisitCount}/>}
+          <TopVisit recordList={lo.get(this.props, 'records.recordList', [])}
+            totalCount={topVisitCount}/>}
           { this.state.selected === lo.get(options, 2) &&
-            <DailySummary recordList={this.props.recordList}/>}
+          <DailySummary dailySummaryChartData={lo.get(this.props, 'records.dailySummaryChartData', [])}
+            hourListInDays={lo.get(this.props, 'records.hourListInDays', [])}/>}
         </div>
 
       </div>
@@ -63,7 +67,7 @@ class PopupUI extends React.Component {
 }
 
 PopupUI.propTypes = {
-  recordList: PropTypes.array
+  records: PropTypes.object
 };
 
 export default PopupUI;
