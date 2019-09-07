@@ -3,17 +3,26 @@ import PropTypes from 'prop-types';
 
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
+import Loading from '../loading/loading';
+
+import styles from './daily.summary.css';
 
 class DailySummary extends React.Component {
   constructor (props) {
     super(props);
+    this.onLoadingGraph = this.onLoadingGraph.bind(this);
+
     this.state = {
+      isLoading: true,
       chartOptions: {
         chart: {
-          type: 'column'
+          type: 'column',
+          events: {
+            load: this.onLoadingGraph
+          }
         },
         title: {
-          text: 'Daily sites visit',
+          text: this.props.pieChartDataTitles,
           style: {
             color: '#274b6d',
             fontSize: '14px'
@@ -55,23 +64,31 @@ class DailySummary extends React.Component {
         },
         plotOptions: {
           column: {
-            stacking: 'normal',
-            dataLabels: {
-              enabled: true
-            }
+            stacking: 'normal'
           }
         },
         series: this.props.dailySummaryChartData
       }
     };
   }
+
+  onLoadingGraph () {
+    this.setState({
+      isLoading: false
+    });
+  }
+
   render () {
     return (
-      <div className={`row`}>
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={this.state.chartOptions}
-        />
+      <div className={`row ${styles.container} text-center`}>
+        {this.state.isLoading && <Loading/>}
+        <span style={{ display: this.state.isLoading ? 'none' : 'block' }}>
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={this.state.chartOptions}
+          />
+        </span>
+
       </div>
     );
   }
@@ -79,7 +96,8 @@ class DailySummary extends React.Component {
 
 DailySummary.propTypes = {
   hourListInDays: PropTypes.array,
-  dailySummaryChartData: PropTypes.array
+  dailySummaryChartData: PropTypes.array,
+  pieChartDataTitles: PropTypes.string
 };
 
 export default DailySummary;
