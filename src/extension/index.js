@@ -70,4 +70,10 @@ const runnable = () => {
 chrome.windows.onFocusChanged.addListener(async (windowId) => {
   focusedWindowId = windowId;
 });
+
+// eslint-disable-next-line no-undef
+chrome.windows.getCurrent({ populate: false }, async (windowId) => {
+  focusedWindowId = windowId;
+});
+
 setInterval(runnable, INTERVAL_DURATION_IN_MS);
