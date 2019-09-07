@@ -51,14 +51,15 @@ class PopupUI extends React.Component {
           { this.state.selected === lo.get(options, 0) &&
             <PIEChart
               pieChartData={lo.get(this.props, 'records.pieChartData', [])}
-              pieChartDataTitles={lo.get(this.props, 'records.pieChartDataTitles', [])}
+              pieChartDataTitles={lo.get(this.props, 'records.pieChartDataTitles', '')}
             />}
           { this.state.selected === lo.get(options, 1) &&
           <TopVisit recordList={lo.get(this.props, 'records.recordList', [])}
             totalCount={topVisitCount}/>}
           { this.state.selected === lo.get(options, 2) &&
           <DailySummary dailySummaryChartData={lo.get(this.props, 'records.dailySummaryChartData', [])}
-            hourListInDays={lo.get(this.props, 'records.hourListInDays', [])}/>}
+            hourListInDays={lo.get(this.props, 'records.hourListInDays', [])}
+            pieChartDataTitles={lo.get(this.props, 'records.pieChartDataTitles', '')}/>}
         </div>
 
       </div>
