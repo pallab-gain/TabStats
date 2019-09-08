@@ -39,9 +39,9 @@ class Database {
     const todayInDays = moment.unix(tabInfo.epoch).dayOfYear();
     const visitList = await this.getSites(key);
     let visitListToday = visitList.filter(item => {
-      const timeInDays = moment.unix(item.epoch);
+      const timeInDays = moment.unix(item.epoch).dayOfYear();
       // items that are only MAX_STORE_DURATION old
-      return todayInDays - timeInDays < MAX_STORE_DURATION;
+      return todayInDays === timeInDays;
     });
     visitListToday.push(tabInfo);
     await this._statsDB.setItem(key, visitListToday);
