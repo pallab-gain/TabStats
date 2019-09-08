@@ -72,8 +72,8 @@ chrome.windows.onFocusChanged.addListener(async (windowId) => {
 });
 
 // eslint-disable-next-line no-undef
-chrome.windows.getCurrent({ populate: false }, async (windowId) => {
-  focusedWindowId = windowId;
+chrome.windows.getCurrent({ populate: false }, async (currentWindow) => {
+  focusedWindowId = currentWindow && currentWindow.id;
 });
 
 setInterval(runnable, INTERVAL_DURATION_IN_MS);
