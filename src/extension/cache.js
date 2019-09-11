@@ -5,7 +5,7 @@ const { safeExecute } = require('./utils');
 const Database = require('./database');
 
 // cache update interval in second
-const UPDATE_INTERVAL_IN_SECOND = 5;
+const UPDATE_INTERVAL_IN_SECOND = 15;
 const MAX_STORE_DURATION_IN_DAY = 1; // in days
 
 class Cache extends Database {
