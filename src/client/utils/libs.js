@@ -4,6 +4,7 @@ import { toHumanReadableDuration, toMinutes } from './utils';
 import lo from 'lodash';
 const HighChartPieEntry = require('../db/highchart.pie.entry');
 const HighChartStackEntry = require('../db/highchart.stack.entry');
+const HighChartWordCloudEntry = require('../db/highchart.word.cloud.entry');
 
 /**
  * Get list of hours for a day in 24 format
@@ -65,4 +66,20 @@ export const getHighChartPieData = (recordList = []) => {
     return HighChartPieEntry(scope, totalTimeInSec, percentage);
   });
   return chartData;
+};
+
+export const getUniqueSites = (recordList = []) => {
+  const siteList = lo.uniqBy(recordList, record => record.scope);
+  return siteList;
+};
+
+export const getRecordsBySites = (recordList = []) => {
+  const siteList = lo.uniqBy(recordList, record => record.scope);
+  let retval = [];
+  for (const curSite of siteList) {
+    // total time in second is actually the weight here
+    const weight = curSite.totalTimeInSec;
+    retval.push(HighChartWordCloudEntry(curSite.scope, weight));
+  }
+  return retval;
 };
