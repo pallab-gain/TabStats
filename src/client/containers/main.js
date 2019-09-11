@@ -14,7 +14,7 @@ import {
 } from '../utils/libs';
 
 const lo = require('lodash');
-const db = require('../../extension/database');
+const db = require('../../extension/cache');
 
 // fetch pie chart related data
 /**

@@ -18,10 +18,6 @@ export const getHourList = () => {
   return categories;
 };
 
-const inBetween = (lo, hi, pivot) => {
-  return pivot >= lo && pivot < hi;
-};
-
 export const getSiteVisitByHours = (siteInfo = undefined) => {
   let visitDurationListInSecond = [];
   let at = 0;

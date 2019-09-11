@@ -1,7 +1,7 @@
 'use strict';
 
-const INTERVAL_DURATION_IN_MS = 1000; // every second
-const SYNC_INTERVAL = 60; // in second
+const INTERVAL_DURATION_IN_MS = 1000; // in millisecond
+const SYNC_INTERVAL_IN_SECOND = 60; // in second
 const {
   getKey,
   safeExecute
@@ -10,14 +10,14 @@ const {
 const { toShortDuration } = require('../client/utils/utils');
 const TabInfo = require('./tab.info');
 const moment = require('moment');
-const db = require('./database');
+const db = require('./cache');
 const lo = require('lodash');
 let focusedWindowId = null;
 
 const maybeSyncRecords = async () => {
   const epoch = moment().unix();
   const lastUpdateEpochInSecond = await db.getLastUpdate();
-  if (epoch - lastUpdateEpochInSecond <= SYNC_INTERVAL) {
+  if (epoch - lastUpdateEpochInSecond <= SYNC_INTERVAL_IN_SECOND) {
     return undefined;
   }
   await db.setLastUpdate(epoch);
@@ -40,6 +40,10 @@ const handleTabState = async (tabList = []) => {
   if (!tabList || tabList.length < 1) {
     return;
   }
+  await safeExecute(async () => {
+    await db.maybePullFromDB();
+  });
+
   await safeExecute(async () => {
     await maybeSyncRecords();
   });
