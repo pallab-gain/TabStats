@@ -1,7 +1,7 @@
 'use strict';
 
-const INTERVAL_DURATION_IN_MS = 1000; // every second
-const SYNC_INTERVAL = 60; // in second
+const INTERVAL_DURATION_IN_MS = 1000; // in millisecond
+const SYNC_INTERVAL_IN_SECOND = 60; // in second
 const {
   getKey,
   safeExecute
@@ -10,14 +10,13 @@ const {
 const { toShortDuration } = require('../client/utils/utils');
 const TabInfo = require('./tab.info');
 const moment = require('moment');
-const db = require('./database');
+const db = require('./cache');
 const lo = require('lodash');
-let focusedWindowId = null;
 
 const maybeSyncRecords = async () => {
   const epoch = moment().unix();
   const lastUpdateEpochInSecond = await db.getLastUpdate();
-  if (epoch - lastUpdateEpochInSecond <= SYNC_INTERVAL) {
+  if (epoch - lastUpdateEpochInSecond <= SYNC_INTERVAL_IN_SECOND) {
     return undefined;
   }
   await db.setLastUpdate(epoch);
@@ -36,15 +35,19 @@ const setBadge = async (tabList = []) => {
   chrome.browserAction.setBadgeText({ text: duration }, () => {});
 };
 
-const handleTabState = async (tabList = []) => {
+const handleTabState = async (tabList = [], windowId) => {
   if (!tabList || tabList.length < 1) {
     return;
   }
   await safeExecute(async () => {
+    await db.maybePullFromDB();
+  });
+
+  await safeExecute(async () => {
     await maybeSyncRecords();
   });
   // get list of active tabs
-  const activeTabList = tabList.filter(currentTab => currentTab.active === true && currentTab.windowId === focusedWindowId);
+  const activeTabList = tabList.filter(currentTab => currentTab.windowId === windowId);
   // update the active tabs status
   for (const currentTab of activeTabList) {
     const tabInfo = TabInfo(currentTab.title, currentTab.url, currentTab.favIconUrl, moment().unix());
@@ -59,21 +62,28 @@ const handleTabState = async (tabList = []) => {
   });
 };
 
-const runnable = () => {
-  // eslint-disable-next-line no-undef
-  chrome.tabs.query({ active: true }, async (tabList = []) => {
-    await handleTabState(tabList);
+/**
+ * Get a list of active tab for currently focused window
+ * @return {Promise<undefined|Tab|Object>}
+ */
+const getActiveTab = async () => {
+  return new Promise((resolve) => {
+    // eslint-disable-next-line no-undef
+    chrome.windows.getCurrent({ populate: true }, async (currentWindow) => {
+      const { focused, id } = currentWindow;
+      if (!focused) {
+        return resolve(undefined);
+      }
+      // eslint-disable-next-line no-undef
+      chrome.tabs.query({ active: true, currentWindow: true }, async (activeTabs) => {
+        resolve({ activeTabs, windowId: id });
+      });
+    });
   });
 };
 
-// eslint-disable-next-line no-undef
-chrome.windows.onFocusChanged.addListener(async (windowId) => {
-  focusedWindowId = windowId;
-});
-
-// eslint-disable-next-line no-undef
-chrome.windows.getCurrent({ populate: false }, async (currentWindow) => {
-  focusedWindowId = currentWindow && currentWindow.id;
-});
-
+const runnable = async () => {
+  const { activeTabs, windowId } = await getActiveTab();
+  await handleTabState(activeTabs, windowId);
+};
 setInterval(runnable, INTERVAL_DURATION_IN_MS);

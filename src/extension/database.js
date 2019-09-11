@@ -37,15 +37,30 @@ class Database {
       return undefined;
     }
     const todayInDays = moment.unix(tabInfo.epoch).dayOfYear();
-    const visitList = await this.getSites(key);
-    let visitListToday = visitList.filter(item => {
-      const timeInDays = moment.unix(item.epoch).dayOfYear();
-      // items that are only MAX_STORE_DURATION old
-      return todayInDays === timeInDays;
-    });
+    const visitList = await this.getSitesByKey(key);
+    let visitListToday = await this.purgeOld(visitList, todayInDays);
     visitListToday.push(tabInfo);
     await this._statsDB.setItem(key, visitListToday);
     await this._statsDBTimeSpent.setItem(key, visitListToday.length);
+  }
+
+  /**
+   * @private
+   * Remove yesterday record
+   * @param records
+   * @param todayInDays
+   * @return {Promise<Array>}
+   */
+  async purgeOld (records = [], todayInDays = 0) {
+    while (records.length > 0) {
+      const timeInDays = moment.unix(records[0].epoch).dayOfYear();
+      // if the current day is today then there is no longer any old record
+      if (todayInDays === timeInDays) {
+        break;
+      }
+      records.shift();
+    }
+    return records;
   }
 
   /**
@@ -54,7 +69,7 @@ class Database {
    * @param key
    * @return {Promise<void|Array>}
    */
-  async getSites (key = null) {
+  async getSitesByKey (key = null) {
     if (!key) {
       return [];
     }
@@ -79,7 +94,7 @@ class Database {
         await safeExecute(async () => {
           const lastUpdateInDays = moment.unix(latestEntry.epoch || epoch).dayOfYear();
           // delete items that are more than max MAX_STORE_DURATION old
-          if (todayInDays - lastUpdateInDays > MAX_STORE_DURATION) {
+          if (todayInDays - lastUpdateInDays >= MAX_STORE_DURATION) {
             await this._statsDB.removeItem(curKey);
             await this._statsDBTimeSpent.removeItem(curKey);
           }
@@ -147,5 +162,4 @@ class Database {
   }
 }
 
-const databaseSingleton = new Database();
-module.exports = databaseSingleton;
+module.exports = Database;

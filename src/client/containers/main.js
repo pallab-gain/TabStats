@@ -10,11 +10,12 @@ import {
   getPieChartTitle,
   getHighChartPieData,
   getHourList,
-  getRecordsByHours
+  getRecordsByHours,
+  getRecordsBySites
 } from '../utils/libs';
 
 const lo = require('lodash');
-const db = require('../../extension/database');
+const db = require('../../extension/cache');
 
 // fetch pie chart related data
 /**
@@ -46,14 +47,22 @@ const fetchDailySummaryChartData = async (recordsList = []) => {
   };
 };
 
+const fetchWordCloudChartData = async (recordList = []) => {
+  const wordCloudChartData = getRecordsBySites(recordList);
+  return {
+    wordCloudChartData
+  };
+};
+
 const fetchData = async () => {
   const recordList = await db.getRecords();
   return new Promise((resolve, reject) => {
     Promise.all([
       fetchPieChartData(recordList),
-      fetchDailySummaryChartData(recordList)
-    ]).then(([pieChartData, dailySummaryData]) => {
-      resolve({ ...pieChartData, ...dailySummaryData, recordList });
+      fetchDailySummaryChartData(recordList),
+      fetchWordCloudChartData(recordList)
+    ]).then(([pieChartData, dailySummaryData, wordCloudChartData]) => {
+      resolve({ ...pieChartData, ...dailySummaryData, ...wordCloudChartData, recordList });
     }).catch(err => {
       reject(err);
     });
