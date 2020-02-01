@@ -38,7 +38,7 @@ class Database {
     }
     const todayInDays = moment.unix(tabInfo.epoch).dayOfYear();
     const visitList = await this.getSitesByKey(key);
-    let visitListToday = await this.purgeOld(visitList, todayInDays);
+    const visitListToday = await this.purgeOld(visitList, todayInDays);
     visitListToday.push(tabInfo);
     await this._statsDB.setItem(key, visitListToday);
     await this._statsDBTimeSpent.setItem(key, visitListToday.length);
@@ -130,7 +130,7 @@ class Database {
     const keys = await this._statsDB.keys() || [];
     const epoch = moment().unix();
     const todayInDays = moment.unix(epoch).dayOfYear();
-    let recordList = [];
+    const recordList = [];
     for (const curKey of keys) {
       const entries = await this._statsDB.getItem(curKey) || [];
       // total number of today's entry in second

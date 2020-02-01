@@ -54,9 +54,10 @@ class PIEChart extends React.Component {
       }
     };
   }
+
   render () {
     return (
-      <div className={`row`}>
+      <div className={'row'}>
         <HighchartsReact
           highcharts={Highcharts}
           options={this.state.chartOptions}

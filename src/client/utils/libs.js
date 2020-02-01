@@ -20,7 +20,7 @@ export const getHourList = () => {
 };
 
 export const getSiteVisitByHours = (siteInfo = undefined) => {
-  let visitDurationListInSecond = [];
+  const visitDurationListInSecond = [];
   let at = 0;
   for (let currentHour = 0; currentHour < 24; currentHour += 1) {
     let visitCount = 0;
@@ -39,7 +39,7 @@ export const getSiteVisitByHours = (siteInfo = undefined) => {
 };
 
 export const getRecordsByHours = (recordList = []) => {
-  let retval = [];
+  const retval = [];
   const siteList = lo.uniqBy(recordList, record => record.scope);
   for (const curSite of siteList) {
     const visitByHours = getSiteVisitByHours(curSite);
@@ -75,7 +75,7 @@ export const getUniqueSites = (recordList = []) => {
 
 export const getRecordsBySites = (recordList = []) => {
   const siteList = lo.uniqBy(recordList, record => record.scope);
-  let retval = [];
+  const retval = [];
   for (const curSite of siteList) {
     // total time in second is actually the weight here
     const weight = curSite.totalTimeInSec;
