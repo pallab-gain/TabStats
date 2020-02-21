@@ -31,6 +31,7 @@ class Cache extends Database {
       this._quick_application_cache[curKey] = visitList;
     }
   }
+
   /**
    * @public
    * Update tab status

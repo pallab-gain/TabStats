@@ -83,7 +83,11 @@ const getActiveTab = async () => {
 };
 
 const runnable = async () => {
-  const { activeTabs, windowId } = await getActiveTab();
+  const activeWindow = await getActiveTab();
+  if (!activeWindow) {
+    return;
+  }
+  const { activeTabs, windowId } = activeWindow;
   await handleTabState(activeTabs, windowId);
 };
 setInterval(runnable, INTERVAL_DURATION_IN_MS);

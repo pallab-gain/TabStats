@@ -32,12 +32,12 @@ class PopupUI extends React.Component {
 
   render () {
     return (
-      <div className={`row`}>
+      <div className={'row'}>
         <div className={`col-sm-12 ${styles.options_div}`}>
-          <div className={`row`}>
+          <div className={'row'}>
             {
               options.map((curOption, indx) => (
-                <div key={`${curOption}-${indx}`} className={`col-sm-3 text-center pl-0 pr-0 ml-0 mr-0`}>
+                <div key={`${curOption}-${indx}`} className={'col-sm-3 text-center pl-0 pr-0 ml-0 mr-0'}>
                   <OptionText
                     text={curOption}
                     isSelected={getIsSelected(this.state.selected, curOption)}
@@ -48,7 +48,7 @@ class PopupUI extends React.Component {
           </div>
         </div>
 
-        <div className={`col-sm-12`}>
+        <div className={'col-sm-12'}>
           { this.state.selected === lo.get(options, 0) &&
           <PIEChart
             pieChartData={lo.get(this.props, 'records.pieChartData', [])}
