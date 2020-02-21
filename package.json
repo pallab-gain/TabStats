@@ -1,6 +1,6 @@
 {
   "name": "tabstats",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "An extension that track amount of time you spent on a website each day.",
   "extensionMain": "./src/extension/index.js",
   "clientMain": "./src/client/index.js",
