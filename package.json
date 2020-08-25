@@ -62,7 +62,7 @@
   },
   "dependencies": {
     "bootstrap": "^4.4.1",
-    "highcharts": "^8.0.0",
+    "highcharts": "^8.1.1",
     "highcharts-react-official": "^3.0.0",
     "intl": "^1.2.5",
     "jquery": "^3.4.1",
